@@ -87,7 +87,7 @@ def callback():
 
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": "DiscordBot (MineDash, 1.0)"
+            "User-Agent": "DiscordBot (PandaMC, 1.0)"
         }
         if _requests:
             r = _requests.post(DISCORD_TOKEN_URL, data=data, headers=headers)
@@ -103,7 +103,7 @@ def callback():
             return redirect("/?error=no_token")
 
         if _requests:
-            r2 = _requests.get(DISCORD_USER_URL, headers={"Authorization": f"Bearer {access_token}", "User-Agent": "DiscordBot (MineDash, 1.0)"})
+            r2 = _requests.get(DISCORD_USER_URL, headers={"Authorization": f"Bearer {access_token}", "User-Agent": "DiscordBot (PandaMC, 1.0)"})
             user_data = r2.json()
         else:
             req2 = urllib.request.Request(DISCORD_USER_URL, headers={"Authorization": f"Bearer {access_token}"})
@@ -248,7 +248,7 @@ async def enviar_al_canal_revision_web(data):
     discord_id   = data.get('discord_id', '')
 
     embed = discord.Embed(
-        title="🌐 Nueva postulación WEB — Staff MineDash",
+        title="🌐 Nueva postulación WEB — Staff PandaMC",
         description=(
             f"📌 **Discord:** `{discord_tag}` ({discord_name})\n"
             f"🆔 **ID:** `{discord_id}`\n"
@@ -282,7 +282,7 @@ async def enviar_al_canal_revision_web(data):
                     title="<:duda_mineback:1472653801679884333> HEMOS RECIBIDO TU POSTULACION",
                     description=(
                         "Esta notificación aclara que la recibimos correctamente.\n\n"
-                        "Hemos recibido tu `postulación para formar parte del equipo staff de MineDash` "
+                        "Hemos recibido tu `postulación para formar parte del equipo staff de PandaMC` "
                         "y se encuentra pendiente de revisión.\n"
                         "Desde ahora, hasta la resolución de la postulación, pueden pasar días. "
                         "Por favor, ten paciencia.\n\n"
@@ -294,7 +294,7 @@ async def enviar_al_canal_revision_web(data):
                     timestamp=datetime.now()
                 )
                 dm_embed.set_image(url=IMG_PENDIENTE)
-                dm_embed.set_footer(text="MineDash Staff · Sistema de postulaciones")
+                dm_embed.set_footer(text="PandaMC Staff · Sistema de postulaciones")
 
                 dm_msg = await miembro.send(embed=dm_embed)
                 # Guardar el message_id del DM para editarlo después
@@ -380,7 +380,7 @@ async def temporizador_postulacion(canal, user_id, minutos):
 
 async def iniciar_postulacion(canal, usuario):
     embed = discord.Embed(
-        title="<:mineback:1454904946452598794> Proceso de Postulación — Staff MineDash",
+        title="<:mineback:1454904946452598794> Proceso de Postulación — Staff PandaMC",
         description=f"¡Hola {usuario.mention}! Bienvenido a tu canal privado de postulación.",
         color=discord.Color.red()
     )
@@ -461,11 +461,11 @@ class BotonesRevision(discord.ui.View):
         if canal_res:
             nombre = usuario.mention if usuario else f"**{self.username}**"
             e = discord.Embed(
-                title=f"[INGRESO] El postulante {self.username} fue admitido en el Staff de MineDash",
+                title=f"[INGRESO] El postulante {self.username} fue admitido en el Staff de PandaMC",
                 description=(
-                    f"{nombre} fue admitido en el Staff de MineDash\n\n"
+                    f"{nombre} fue admitido en el Staff de PandaMC\n\n"
                     "Al igual que los demás postulantes y staff, esperamos que logre alcanzar sus metas, "
-                    "y demostrar lo mucho que vale dentro de MineDash.\n\n"
+                    "y demostrar lo mucho que vale dentro de PandaMC.\n\n"
                     "> ➡ Recuerda que entrar al staff es solo el comienzo. Hay muchas etapas que aprobar una vez logres entrar.\n"
                     "> ¡Mantenerse y crecer es lo difícil!\n\n"
                     'Un día un sabio dijo... "*Las pequeñas cosas son las responsables de los **grandes cambios**"'
@@ -488,7 +488,7 @@ class BotonesRevision(discord.ui.View):
                     color=discord.Color.green(),
                     timestamp=datetime.now()
                 )
-                e_dm.set_footer(text="MineDash Staff · Sistema de postulaciones")
+                e_dm.set_footer(text="PandaMC Staff · Sistema de postulaciones")
                 await usuario.send(embed=e_dm)
             except:
                 pass
@@ -510,11 +510,11 @@ class BotonesRevision(discord.ui.View):
         if canal_res:
             nombre = usuario.mention if usuario else f"**{self.username}**"
             e = discord.Embed(
-                title=f"[RESULTADO] La postulación de {self.username} fue rechazada en el Staff de MineDash",
+                title=f"[RESULTADO] La postulación de {self.username} fue rechazada en el Staff de PandaMC",
                 description=(
-                    f"{nombre} tu postulación para formar parte del Staff de MineDash ha sido revisada, "
+                    f"{nombre} tu postulación para formar parte del Staff de PandaMC ha sido revisada, "
                     "y en esta ocasión no ha sido aprobada.\n\n"
-                    "Agradecemos el tiempo, esfuerzo e interés que mostraste al querer formar parte del equipo de MineDash.\n\n"
+                    "Agradecemos el tiempo, esfuerzo e interés que mostraste al querer formar parte del equipo de PandaMC.\n\n"
                     "> ➡ Recuerda: un rechazo no define tu capacidad. Siempre puedes mejorar, aprender y volver a intentarlo en el futuro.\n"
                     "> Cada experiencia es una oportunidad para crecer.\n\n"
                     'Un día un sabio dijo... "Los grandes logros nacen después de muchos intentos."'
@@ -537,7 +537,7 @@ class BotonesRevision(discord.ui.View):
                     color=discord.Color.red(),
                     timestamp=datetime.now()
                 )
-                e_dm.set_footer(text="MineDash Staff · Sistema de postulaciones")
+                e_dm.set_footer(text="PandaMC Staff · Sistema de postulaciones")
                 await usuario.send(embed=e_dm)
             except:
                 pass
@@ -596,7 +596,7 @@ class ConfirmarPostulacion(discord.ui.View):
                 title="<:duda_mineback:1472653801679884333> HEMOS RECIBIDO TU POSTULACION",
                 description=(
                     "Esta notificación aclara que la recibimos correctamente.\n\n"
-                    "Hemos recibido tu `postulación para formar parte del equipo staff de MineDash` "
+                    "Hemos recibido tu `postulación para formar parte del equipo staff de PandaMC` "
                     "y se encuentra pendiente de revisión.\n"
                     "Desde ahora, hasta la resolución de la postulación, pueden pasar días. "
                     "Por favor, ten paciencia.\n\n"
@@ -608,7 +608,7 @@ class ConfirmarPostulacion(discord.ui.View):
                 timestamp=datetime.now()
             )
             dm_embed.set_image(url=IMG_PENDIENTE)
-            dm_embed.set_footer(text="MineDash Staff · Sistema de postulaciones")
+            dm_embed.set_footer(text="PandaMC Staff · Sistema de postulaciones")
             dm_msg = await interaction.user.send(embed=dm_embed)
             dm_mensajes_postulacion[str(interaction.user.id)] = dm_msg.id
         except Exception as e:
@@ -730,7 +730,7 @@ async def setup_postulaciones(interaction: discord.Interaction):
             "<:Survival_MineBack:1473477865713570056>: No ser staff en otro servidor.\n"
             "<:Survival_MineBack:1473477865713570056>: Buena ortografía y madurez.\n\n"
             "<:cohete_mineback:1455743005787951294> - **¡Postúlate dando clic en el botón de abajo!**\n\n"
-            "<:mineback:1454904946452598794> | minedash.xyz (( 1.16x - 1.21x ))"
+            "<:mineback:1454904946452598794> | PandaMC"
         ),
         color=discord.Color.red()
     )
