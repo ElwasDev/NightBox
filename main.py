@@ -248,7 +248,7 @@ async def enviar_al_canal_revision_web(data):
     discord_id   = data.get('discord_id', '')
 
     embed = discord.Embed(
-        title="🌐 Nueva postulación WEB — Staff PandaMC",
+        title="🌐 Nueva postulación WEB — Staff NightBox",
         description=(
             f"📌 **Discord:** `{discord_tag}` ({discord_name})\n"
             f"🆔 **ID:** `{discord_id}`\n"
@@ -282,19 +282,19 @@ async def enviar_al_canal_revision_web(data):
                     title="<:duda_mineback:1472653801679884333> HEMOS RECIBIDO TU POSTULACION",
                     description=(
                         "Esta notificación aclara que la recibimos correctamente.\n\n"
-                        "Hemos recibido tu `postulación para formar parte del equipo staff de PandaMC` "
+                        "Hemos recibido tu `postulación para formar parte del equipo staff de NightBox` "
                         "y se encuentra pendiente de revisión.\n"
                         "Desde ahora, hasta la resolución de la postulación, pueden pasar días. "
                         "Por favor, ten paciencia.\n\n"
                         "> Te notificaremos por este medio en cuanto el equipo tome una decisión.\n\n"
-                        "<a:articulo_mineback:1454888675124052051> **Actualización del estado**\n"
+                        "<:minecraft:1497711745073025135> **Actualización del estado**\n"
                         "> Estado actual: `Pendiente`"
                     ),
                     color=discord.Color.red(),
                     timestamp=datetime.now()
                 )
                 dm_embed.set_image(url=IMG_PENDIENTE)
-                dm_embed.set_footer(text="PandaMC Staff · Sistema de postulaciones")
+                dm_embed.set_footer(text="NightBox Staff · Sistema de postulaciones")
 
                 dm_msg = await miembro.send(embed=dm_embed)
                 # Guardar el message_id del DM para editarlo después
@@ -315,7 +315,7 @@ class BotonPostular(discord.ui.View):
             emoji="🌐"
         ))
 
-    @discord.ui.button(label="Postularse (Chat)", style=discord.ButtonStyle.primary, custom_id="postular_button", emoji="<a:articulo_mineback:1454888675124052051>")
+    @discord.ui.button(label="Postularse (Chat)", style=discord.ButtonStyle.primary, custom_id="postular_button", emoji="<:minecraft:1497711745073025135>")
     async def postular_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         if interaction.user.id in postulaciones_activas:
             await interaction.response.send_message("❌ Ya tienes una postulación en proceso.", ephemeral=True)
@@ -380,11 +380,11 @@ async def temporizador_postulacion(canal, user_id, minutos):
 
 async def iniciar_postulacion(canal, usuario):
     embed = discord.Embed(
-        title="<:mineback:1454904946452598794> Proceso de Postulación — Staff PandaMC",
+        title="<:nightbox:1497711599845113996> Proceso de Postulación — Staff NightBox",
         description=f"¡Hola {usuario.mention}! Bienvenido a tu canal privado de postulación.",
         color=discord.Color.red()
     )
-    embed.add_field(name="<a:articulo_mineback:1454888675124052051> Instrucciones", value=(
+    embed.add_field(name="<:minecraft:1497711745073025135> Instrucciones", value=(
         "**1.** Responde cada pregunta de forma clara y detallada.\n"
         "**2.** Revisa tus respuestas antes de enviar.\n"
         "**3.** Tienes **34 minutos** para completar el proceso."
@@ -461,9 +461,9 @@ class BotonesRevision(discord.ui.View):
         if canal_res:
             nombre = usuario.mention if usuario else f"**{self.username}**"
             e = discord.Embed(
-                title=f"[INGRESO] El postulante {self.username} fue admitido en el Staff de PandaMC",
+                title=f"[INGRESO] El postulante {self.username} fue admitido en el Staff de NightBox",
                 description=(
-                    f"{nombre} fue admitido en el Staff de PandaMC\n\n"
+                    f"{nombre} fue admitido en el Staff de NightBox\n\n"
                     "Al igual que los demás postulantes y staff, esperamos que logre alcanzar sus metas, "
                     "y demostrar lo mucho que vale dentro de PandaMC.\n\n"
                     "> ➡ Recuerda que entrar al staff es solo el comienzo. Hay muchas etapas que aprobar una vez logres entrar.\n"
@@ -482,13 +482,13 @@ class BotonesRevision(discord.ui.View):
                     title="<:si_mineback:1455742911739199724> ACTUALIZACION DE TU POSTULACION",
                     description=(
                         "¡Tu postulación fue **aceptada**! ¡Bienvenido al equipo! 🎊\n\n"
-                        "<a:articulo_mineback:1454888675124052051> **Actualización del estado**\n"
+                        "<:minecraft:1497711745073025135> **Actualización del estado**\n"
                         "> Estado actual: `Aceptado` ✅"
                     ),
                     color=discord.Color.green(),
                     timestamp=datetime.now()
                 )
-                e_dm.set_footer(text="PandaMC Staff · Sistema de postulaciones")
+                e_dm.set_footer(text="NightBox Staff · Sistema de postulaciones")
                 await usuario.send(embed=e_dm)
             except:
                 pass
@@ -510,9 +510,9 @@ class BotonesRevision(discord.ui.View):
         if canal_res:
             nombre = usuario.mention if usuario else f"**{self.username}**"
             e = discord.Embed(
-                title=f"[RESULTADO] La postulación de {self.username} fue rechazada en el Staff de PandaMC",
+                title=f"[RESULTADO] La postulación de {self.username} fue rechazada en el Staff de NightBox",
                 description=(
-                    f"{nombre} tu postulación para formar parte del Staff de PandaMC ha sido revisada, "
+                    f"{nombre} tu postulación para formar parte del Staff de NightBox ha sido revisada, "
                     "y en esta ocasión no ha sido aprobada.\n\n"
                     "Agradecemos el tiempo, esfuerzo e interés que mostraste al querer formar parte del equipo de PandaMC.\n\n"
                     "> ➡ Recuerda: un rechazo no define tu capacidad. Siempre puedes mejorar, aprender y volver a intentarlo en el futuro.\n"
@@ -531,13 +531,13 @@ class BotonesRevision(discord.ui.View):
                     title="<:No_mineback:1455742851601268868> ACTUALIZACION DE TU POSTULACION",
                     description=(
                         "Tu postulación fue **rechazada**. Puedes reintentar en 14 días. 💪\n\n"
-                        "<a:articulo_mineback:1454888675124052051> **Actualización del estado**\n"
+                        "<:minecraft:1497711745073025135> **Actualización del estado**\n"
                         "> Estado actual: `Rechazado` ❌"
                     ),
                     color=discord.Color.red(),
                     timestamp=datetime.now()
                 )
-                e_dm.set_footer(text="PandaMC Staff · Sistema de postulaciones")
+                e_dm.set_footer(text="NightBox Staff · Sistema de postulaciones")
                 await usuario.send(embed=e_dm)
             except:
                 pass
@@ -596,19 +596,19 @@ class ConfirmarPostulacion(discord.ui.View):
                 title="<:duda_mineback:1472653801679884333> HEMOS RECIBIDO TU POSTULACION",
                 description=(
                     "Esta notificación aclara que la recibimos correctamente.\n\n"
-                    "Hemos recibido tu `postulación para formar parte del equipo staff de PandaMC` "
+                    "Hemos recibido tu `postulación para formar parte del equipo staff de NightBox` "
                     "y se encuentra pendiente de revisión.\n"
                     "Desde ahora, hasta la resolución de la postulación, pueden pasar días. "
                     "Por favor, ten paciencia.\n\n"
                     "> Te notificaremos por este medio en cuanto el equipo tome una decisión.\n\n"
-                    "<a:articulo_mineback:1454888675124052051> **Actualización del estado**\n"
+                    "<:minecraft:1497711745073025135> **Actualización del estado**\n"
                     "> Estado actual: `Pendiente`"
                 ),
                 color=discord.Color.red(),
                 timestamp=datetime.now()
             )
             dm_embed.set_image(url=IMG_PENDIENTE)
-            dm_embed.set_footer(text="PandaMC Staff · Sistema de postulaciones")
+            dm_embed.set_footer(text="NightBox Staff · Sistema de postulaciones")
             dm_msg = await interaction.user.send(embed=dm_embed)
             dm_mensajes_postulacion[str(interaction.user.id)] = dm_msg.id
         except Exception as e:
@@ -720,17 +720,17 @@ async def on_message(message):
 async def setup_postulaciones(interaction: discord.Interaction):
     embed = discord.Embed(
         description=(
-            "# <:mineback:1454904946452598794> - ¡POSTULACIONES ABIERTAS!\n"
+            "# <:nightbox:1497711599845113996> - ¡POSTULACIONES ABIERTAS!\n"
             "¿Estás interesado en ser parte del Staff-Team?\n"
             "Si es así, no esperes más. Esta es tu oportunidad. Postúlate dando clic en el botón de abajo.\n\n"
             "# Requisitos a cumplir:\n"
-            "<:Survival_MineBack:1473477865713570056>: Tener mínimo 14 Años.\n"
-            "<:Survival_MineBack:1473477865713570056>: Ser premium.\n"
-            "<:Survival_MineBack:1473477865713570056>: Historial limpio en el servidor.\n"
-            "<:Survival_MineBack:1473477865713570056>: No ser staff en otro servidor.\n"
-            "<:Survival_MineBack:1473477865713570056>: Buena ortografía y madurez.\n\n"
-            "<:cohete_mineback:1455743005787951294> - **¡Postúlate dando clic en el botón de abajo!**\n\n"
-            "<:mineback:1454904946452598794> | PandaMC"
+            "<:minecraft:1497711745073025135>: Tener mínimo 14 Años.\n"
+            "<:minecraft:1497711745073025135>: Ser premium.\n"
+            "<:minecraft:1497711745073025135>: Historial limpio en el servidor.\n"
+            "<:minecraft:1497711745073025135>: No ser staff en otro servidor.\n"
+            "<:minecraft:1497711745073025135>: Buena ortografía y madurez.\n\n"
+            "<:cohete_nightbox:1497711864824725646> - **¡Postúlate dando clic en el botón de abajo!**\n\n"
+            "<:nightbox:1497711599845113996> | NightBox"
         ),
         color=discord.Color.red()
     )
