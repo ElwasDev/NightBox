@@ -739,10 +739,12 @@ async def on_message(message):
 @bot.tree.command(name="setup_postulaciones", description="Configura el sistema de postulaciones (Solo administradores)")
 @app_commands.checks.has_permissions(administrator=True)
 async def setup_postulaciones(interaction: discord.Interaction):
+    await interaction.response.defer(ephemeral=True)
+
     guild = interaction.guild
-    nightbox_e = get_emoji(guild, EMOJI_MAPPING['nightbox'])       or '🌙'
-    minecraft_e = get_emoji(guild, EMOJI_MAPPING['minecraft'])     or '⛏️'
-    cohete_e   = get_emoji(guild, EMOJI_MAPPING['cohete_nightbox']) or '🚀'
+    nightbox_e  = get_emoji(guild, EMOJI_MAPPING['nightbox'])        or '🌙'
+    minecraft_e = get_emoji(guild, EMOJI_MAPPING['minecraft'])       or '⛏️'
+    cohete_e    = get_emoji(guild, EMOJI_MAPPING['cohete_nightbox']) or '🚀'
 
     embed = discord.Embed(
         description=(
@@ -765,12 +767,12 @@ async def setup_postulaciones(interaction: discord.Interaction):
     view.add_item(discord.ui.Button(
         label="Postularse",
         style=discord.ButtonStyle.link,
-        url=WEB_URL or "https://minedashpostulaciones.up.railway.app/",
+        url=WEB_URL or "https://nighboxpostulaciones.up.railway.app/",
         emoji="🌐"
     ))
 
-    await interaction.response.send_message("✅ Configurado!", ephemeral=True)
     await interaction.channel.send(embed=embed, view=view)
+    await interaction.followup.send("✅ Configurado!", ephemeral=True)
 
 
 @bot.tree.command(name="ayuda_postulaciones", description="Ayuda sobre el sistema")
