@@ -406,24 +406,43 @@ async def enviar_al_canal_revision_web(data):
     nightbox_e = get_emoji(guild, EMOJI_MAPPING['nightbox']) or '🌙'
     arrow_e    = get_emoji(guild, '1383arrowright') or '➡️'
 
-    # Construir respuestas para el HTML
     preguntas = preguntas_data.get("preguntas", [])
-    respuestas_dict = {i: data.get(f"p{i+1}", "Sin respuesta") for i in range(len(preguntas))}
 
-    # Generar HTML y adjuntarlo como archivo
-    html_content = generar_html_postulacion(discord_tag, discord_name, discord_id, preguntas, respuestas_dict)
-    import io
-    html_file = discord.File(io.BytesIO(html_content.encode("utf-8")), filename=f"postulacion_{discord_tag}.html")
-
-    # Mensaje simple con info básica
-    mensaje = (
-        f"{nightbox_e} **Postulacion De {discord_name}**\n"
-        f"{arrow_e} **Discord:** {discord_tag}\n"
-        f"{arrow_e} **ID:** {discord_id}"
+    # ── Embed principal con info del postulante ──
+    embed_main = discord.Embed(
+        description=(
+            f"{nightbox_e} **Postulacion De {discord_name}**\n"
+            f"{arrow_e} **Discord:** {discord_tag}\n"
+            f"{arrow_e} **ID:** `{discord_id}`"
+        ),
+        color=discord.Color.red(),
+        timestamp=datetime.now()
     )
+    embed_main.set_footer(text="Enviado desde la página web · Verificado con Discord OAuth2")
+
+    # ── Embeds de preguntas (máx 12 preguntas por embed para no saturar) ──
+    CHUNK = 12
+    embeds_preguntas = []
+    for chunk_start in range(0, len(preguntas), CHUNK):
+        chunk = preguntas[chunk_start:chunk_start + CHUNK]
+        e = discord.Embed(color=discord.Color.red())
+        for i, pregunta in enumerate(chunk):
+            idx = chunk_start + i
+            respuesta = data.get(f"p{idx+1}", "").strip() or "Sin respuesta"
+            e.add_field(
+                name=f"{arrow_e} P{idx+1}: {pregunta[:100]}",
+                value=f"> {respuesta[:1000]}",
+                inline=False
+            )
+        embeds_preguntas.append(e)
 
     view = BotonesRevision(int(discord_id) if discord_id else 0, discord_tag)
-    await canal_revision.send(content=mensaje, file=html_file, view=view)
+
+    # Primer mensaje: embed principal + botones
+    await canal_revision.send(embed=embed_main, view=view)
+    # Mensajes adicionales: un embed por grupo de preguntas
+    for e in embeds_preguntas:
+        await canal_revision.send(embed=e)
 
     # ── Enviar DM al usuario con estado PENDIENTE ──
     if discord_id:
@@ -652,11 +671,11 @@ class BotonesRevision(discord.ui.View):
 
         await self._editar_dm_estado(guild, "Aceptado", discord.Color.green(), "✅")
 
-        # Editar el contenido del mensaje (ya no es embed)
-        contenido_actual = interaction.message.content or ""
-        nuevo_contenido = "✅ **POSTULACIÓN ACEPTADA**\n" + "\n".join(contenido_actual.split("\n")[1:]) if "\n" in contenido_actual else "✅ **POSTULACIÓN ACEPTADA**\n" + contenido_actual
+        embed = interaction.message.embeds[0] if interaction.message.embeds else discord.Embed(color=discord.Color.green())
+        embed.title = "✅ POSTULACIÓN ACEPTADA"
+        embed.color = discord.Color.green()
         for item in self.children: item.disabled = True
-        await interaction.response.edit_message(content=nuevo_contenido, view=self)
+        await interaction.response.edit_message(embed=embed, view=self)
         await interaction.followup.send(f"> ✅ Aceptada por {interaction.user.mention}")
 
     @discord.ui.button(label="Rechazar", style=discord.ButtonStyle.danger, custom_id="rechazar_postulacion", emoji="❌")
@@ -702,11 +721,11 @@ class BotonesRevision(discord.ui.View):
 
         await self._editar_dm_estado(guild, "Rechazado", discord.Color.red(), "❌")
 
-        # Editar el contenido del mensaje (ya no es embed)
-        contenido_actual = interaction.message.content or ""
-        nuevo_contenido = "❌ **POSTULACIÓN RECHAZADA**\n" + "\n".join(contenido_actual.split("\n")[1:]) if "\n" in contenido_actual else "❌ **POSTULACIÓN RECHAZADA**\n" + contenido_actual
+        embed = interaction.message.embeds[0] if interaction.message.embeds else discord.Embed(color=discord.Color.red())
+        embed.title = "❌ POSTULACIÓN RECHAZADA"
+        embed.color = discord.Color.red()
         for item in self.children: item.disabled = True
-        await interaction.response.edit_message(content=nuevo_contenido, view=self)
+        await interaction.response.edit_message(embed=embed, view=self)
         await interaction.followup.send(f"> ❌ Rechazada por {interaction.user.mention}")
 
 
@@ -741,25 +760,41 @@ class ConfirmarPostulacion(discord.ui.View):
             nightbox_e = get_emoji(interaction.guild, EMOJI_MAPPING['nightbox']) or '🌙'
             arrow_e    = get_emoji(interaction.guild, '1383arrowright') or '➡️'
 
-            # Generar HTML con las respuestas
-            import io
             preguntas_lista = preguntas_data["preguntas"]
-            respuestas_dict = {i: postulacion["respuestas"].get(i, "Sin respuesta") for i in range(len(preguntas_lista))}
-            html_content = generar_html_postulacion(
-                str(interaction.user),
-                interaction.user.display_name,
-                str(interaction.user.id),
-                preguntas_lista,
-                respuestas_dict
-            )
-            html_file = discord.File(io.BytesIO(html_content.encode("utf-8")), filename=f"postulacion_{interaction.user.name}.html")
 
-            mensaje = (
-                f"{nightbox_e} **Postulacion De {interaction.user.display_name}**\n"
-                f"{arrow_e} **Discord:** {interaction.user}\n"
-                f"{arrow_e} **ID:** {interaction.user.id}"
+            # ── Embed principal ──
+            embed_main = discord.Embed(
+                description=(
+                    f"{nightbox_e} **Postulacion De {interaction.user.display_name}**\n"
+                    f"{arrow_e} **Discord:** {interaction.user}\n"
+                    f"{arrow_e} **ID:** `{interaction.user.id}`"
+                ),
+                color=discord.Color.red(),
+                timestamp=datetime.now()
             )
-            await canal_revision.send(content=mensaje, file=html_file, view=BotonesRevision(interaction.user.id, interaction.user.name))
+            embed_main.set_thumbnail(url=interaction.user.display_avatar.url)
+            embed_main.set_footer(text=f"Postulación de {interaction.user.name}")
+
+            # ── Embeds de preguntas (máx 12 por embed) ──
+            CHUNK = 12
+            embeds_preguntas = []
+            for chunk_start in range(0, len(preguntas_lista), CHUNK):
+                chunk = preguntas_lista[chunk_start:chunk_start + CHUNK]
+                e = discord.Embed(color=discord.Color.red())
+                for i, pregunta in enumerate(chunk):
+                    idx = chunk_start + i
+                    respuesta = postulacion["respuestas"].get(idx, "Sin respuesta")
+                    e.add_field(
+                        name=f"{arrow_e} P{idx+1}: {pregunta[:100]}",
+                        value=f"> {str(respuesta)[:1000]}",
+                        inline=False
+                    )
+                embeds_preguntas.append(e)
+
+            view = BotonesRevision(interaction.user.id, interaction.user.name)
+            await canal_revision.send(embed=embed_main, view=view)
+            for e in embeds_preguntas:
+                await canal_revision.send(embed=e)
 
         await interaction.response.send_message("✅ **¡Postulación enviada!** Este canal se cerrará en 5 segundos.")
 
