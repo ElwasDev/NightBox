@@ -890,6 +890,20 @@ async def cerrar_postulaciones(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed, ephemeral=True)
 
 @bot.event
+async def rotar_status():
+    """Rota el status del bot entre dos actividades."""
+    await bot.wait_until_ready()
+    while not bot.is_closed():
+        total = len(postulaciones_enviadas)
+        actividades = [
+            discord.Activity(type=discord.ActivityType.watching, name="Revisando postulaciones"),
+            discord.Activity(type=discord.ActivityType.watching, name=f"Postulaciones: {total} enviadas"),
+        ]
+        for actividad in actividades:
+            await bot.change_presence(status=discord.Status.online, activity=actividad)
+            await asyncio.sleep(10)
+
+
 async def on_ready():
     print(f'✅ Bot conectado como {bot.user}')
     print(f'🌐 Página web activa con OAuth2 Discord')
@@ -901,6 +915,7 @@ async def on_ready():
     bot.add_view(BotonPostular())
     bot.add_view(BotonesRevision(0, ""))
     bot.loop.create_task(procesar_postulaciones_web())
+    bot.loop.create_task(rotar_status())
     print("✅ Sistema listo")
 
 
