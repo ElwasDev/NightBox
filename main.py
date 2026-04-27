@@ -904,6 +904,7 @@ async def rotar_status():
             await asyncio.sleep(10)
 
 
+@bot.event
 async def on_ready():
     print(f'✅ Bot conectado como {bot.user}')
     print(f'🌐 Página web activa con OAuth2 Discord')
