@@ -50,7 +50,7 @@ DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
 DISCORD_USER_URL  = "https://discord.com/api/users/@me"
 
 # URL de imagen de estado pendiente
-IMG_PENDIENTE = "https://media.discordapp.net/attachments/1145130881124667422/1473774273335398524/pendiente_mine.png?ex=69976ec0&is=69961d40&hm=1c0c4ba8c3734d1874a3abc1e39db5c233fa359c9b445b64ae3c57bd6c5a3595&=&format=webp&quality=lossless&width=562&height=562"
+IMG_PENDIENTE = "https://media.discordapp.net/attachments/1145130881124667422/1498136147115638944/content.png?ex=69f00f83&is=69eebe03&hm=acc054030e4c0a24546045d4b8308de96abd1ffebedf7589b722518c13062619&=&format=webp&quality=lossless&width=661&height=562"
 
 def get_redirect_uri():
     return f"{WEB_URL}/callback"
@@ -649,7 +649,7 @@ class BotonesRevision(discord.ui.View):
                 color=discord.Color.red(),
                 timestamp=datetime.now()
             )
-            e.set_image(url="https://media.discordapp.net/attachments/1145130881124667422/1473781003116871964/admitivo.png?ex=69977504&is=69962384&hm=28c70011e74532ebe684585222949724f4e2dbb2599ff568a2a9c60ea19aeeab&=&format=webp&quality=lossless&width=842&height=562")
+            e.set_image(url="https://media.discordapp.net/attachments/1145130881124667422/1498136175339245588/content.png?ex=69f00f8a&is=69eebe0a&hm=6df4bd118fc527956c31c0977939d3d1abdd854ba3708fcedeeab851a1495b86&=&format=webp&quality=lossless&width=393&height=315")
             await canal_res.send(embed=e)
 
         if usuario:
@@ -699,7 +699,7 @@ class BotonesRevision(discord.ui.View):
                 color=discord.Color.red(),
                 timestamp=datetime.now()
             )
-            e.set_image(url="https://media.discordapp.net/attachments/1472406542824378490/1473783165616263344/rechazado.jpg?ex=69977708&is=69962588&hm=14bf8058f83868ed48178bb37d2fa6429f7472fdbe0f8bd324684ca41a8b6254&=&format=webp&width=842&height=562")
+            e.set_image(url="https://media.discordapp.net/attachments/1145130881124667422/1498136189763588106/content.png?ex=69f00f8d&is=69eebe0d&hm=426f24866be5b9ded8ee44c20590a3a5cf6e939cdcc71fb7c947142b3935eb73&=&format=webp&quality=lossless&width=393&height=315")
             await canal_res.send(embed=e)
 
         if usuario:
