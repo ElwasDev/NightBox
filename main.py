@@ -379,26 +379,35 @@ async def procesar_postulaciones_web():
         if postulaciones_web_pendientes:
             data = postulaciones_web_pendientes.pop(0)
             try:
+                print(f"📬 Procesando postulación de {data.get('discord', '?')}")
                 await enviar_al_canal_revision_web(data)
+                print(f"✅ Postulación enviada al canal correctamente")
             except Exception as e:
-                print(f"Error procesando postulación web: {e}")
+                import traceback
+                print(f"❌ Error procesando postulación web: {e}")
+                print(traceback.format_exc())
         await asyncio.sleep(3)
 
 async def enviar_al_canal_revision_web(data):
     guild = next(iter(bot.guilds), None)
     if not guild:
+        print("❌ No se encontró ningún servidor")
         return
 
     canal_revision = None
     if config.get("canal_revision_id"):
         canal_revision = guild.get_channel(config["canal_revision_id"])
+        print(f"🔍 Buscando canal por ID {config['canal_revision_id']}: {'encontrado' if canal_revision else 'NO encontrado'}")
     if not canal_revision:
         canal_revision = discord.utils.get(guild.text_channels, name="postulaciones-staff")
+        print(f"🔍 Buscando canal por nombre: {'encontrado' if canal_revision else 'NO encontrado'}")
     if not canal_revision:
         try:
             canal_revision = await guild.create_text_channel(name="postulaciones-staff")
             config["canal_revision_id"] = canal_revision.id
-        except:
+            print(f"✅ Canal creado: {canal_revision.id}")
+        except Exception as e:
+            print(f"❌ No se pudo crear el canal: {e}")
             return
 
     discord_tag  = data.get('discord', 'No especificado')
